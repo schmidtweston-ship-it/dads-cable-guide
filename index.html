@@ -1,0 +1,23 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Dad's Cable Guide</title>
+<style>body{font-family:system-ui,sans-serif;background:#12324a;color:#fff;margin:0;padding:20px;text-align:center}h1{color:#ffd166}
+.tabs button,.opt{font-size:22px;padding:14px 22px;margin:8px;border:0;border-radius:12px;background:#ffd166;color:#12324a;cursor:pointer;font-weight:700}
+.card{background:#1d4e70;border-radius:16px;padding:18px;margin:14px auto;max-width:640px;display:flex;gap:18px;align-items:center;text-align:left}
+.card svg{flex:0 0 140px}.card h2{margin:0 0 6px;color:#ffd166}.card p{font-size:19px;margin:4px 0}#quiz{display:none}#q svg{width:220px}#fb{font-size:26px;min-height:40px}</style></head><body>
+<h1>Dad's Cable Guide</h1><div class="tabs"><button onclick="show('learn')">Learn</button><button onclick="show('quiz')">Quiz</button></div>
+<div id="learn"></div><div id="quiz"><div id="q"></div><div id="opts"></div><div id="fb"></div><p id="score"></p></div>
+<script>
+const C=[
+{n:"USB-A",s:'<rect x="15" y="40" width="110" height="40" rx="3" fill="#ccc"/><rect x="25" y="48" width="90" height="12" fill="#3a7bd5"/>',d:"Big, flat rectangle. Only fits one way up.",u:"Computers, chargers, flash drives. The common end."},
+{n:"USB-B",s:'<path d="M35 30h70v40l-12 14H47L35 70z" fill="#ccc"/><rect x="52" y="45" width="36" height="22" fill="#555"/>',d:"Chunky square with beveled top corners.",u:"Printers, scanners, audio interfaces like the AudioBox."},
+{n:"USB-C",s:'<rect x="25" y="45" width="90" height="30" rx="15" fill="#ccc"/><rect x="40" y="56" width="60" height="8" rx="4" fill="#555"/>',d:"Small rounded oval. Reversible, works either way up.",u:"New phones, iPhone 15 and up, laptops. Fast charging and data."},
+{n:"Mini USB",s:'<path d="M35 45h70v20l-10 12H45L35 65z" fill="#ccc"/><rect x="48" y="52" width="44" height="8" fill="#555"/>',d:"Small trapezoid, thicker than Micro.",u:"Older cameras, GPS units, old MP3 players."},
+{n:"Micro USB",s:'<path d="M30 50h80v10l-10 12H40L30 60z" fill="#ccc"/><rect x="42" y="56" width="56" height="5" fill="#555"/>',d:"Thin trapezoid, wider on top. One way only.",u:"Older Android phones, speakers, cheap gadgets."}];
+const svg=s=>`<svg viewBox="0 0 140 120" width="140">${s}</svg>`;
+document.getElementById('learn').innerHTML=C.map(c=>`<div class="card">${svg(c.s)}<div><h2>${c.n}</h2><p>${c.d}</p><p><b>Used for:</b> ${c.u}</p></div></div>`).join('');
+let right=0,total=0,cur;
+function next(){cur=C[Math.floor(Math.random()*C.length)];document.getElementById('q').innerHTML='<h2>Which plug is this?</h2>'+svg(cur.s);document.getElementById('fb').textContent='';
+document.getElementById('opts').innerHTML=C.map(c=>`<button class="opt" onclick="pick('${c.n}')">${c.n}</button>`).join('');}
+function pick(n){total++;if(n===cur.n){right++;fb.textContent='Yes! '+cur.n+' — '+cur.u}else fb.textContent='Nope, that was '+cur.n+'. '+cur.d;
+score.textContent=`Score: ${right} of ${total}`;setTimeout(next,2500);}
+function show(t){learn.style.display=t=='learn'?'block':'none';quiz.style.display=t=='quiz'?'block':'none';if(t=='quiz')next();}
+</script></body></html>
